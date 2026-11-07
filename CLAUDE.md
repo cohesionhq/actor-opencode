@@ -3,9 +3,9 @@
 `actor-opencode`: a Cohesion actor client that runs OpenCode, embedded
 through `@opencode/sdk`, on Bun. Read `README.md`, then `ARCHITECTURE.md`,
 then `docs/actors.md` in cohesion (`../cohesion`), which this implements. It
-talks to cohesiond only through `cohesion-ts` (`../cohesion-ts`); protocol
+talks to cohesiond only through `cohesion-ts` (cohesionhq/ts); protocol
 work belongs there. What every actor client shares (CLI, config, call
-routing, run loop) is `cohesion-agent-kit` (`../cohesion-agent-kit`).
+routing, run loop) is `cohesion-agent-kit` (cohesionhq/actor-kit).
 `../actor-agentsdk` is its sibling for Claude Code: match its
 conventions and voice.
 

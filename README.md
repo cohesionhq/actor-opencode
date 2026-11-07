@@ -8,9 +8,9 @@ OpenCode session in its directory: what the user says in Cohesion goes in as
 the session's prompts, and OpenCode's words, tool uses, questions and
 permission prompts come back as the actor session's transcript, with its status and
 progress. See `docs/actors.md` in cohesion for the protocol; this client
-speaks it through [cohesion-ts](../cohesion-ts), and its command line,
+speaks it through [cohesion-ts](https://github.com/cohesionhq/ts), and its command line,
 configuration and call routing are
-[cohesion-agent-kit](../cohesion-agent-kit)'s.
+[cohesion-agent-kit](https://github.com/cohesionhq/actor-kit)'s.
 
 It runs on Bun, as the user who runs it, with that user's OpenCode
 configuration, credentials and session store, as `opencode` itself would.
@@ -116,7 +116,8 @@ bun test
 ```
 
 CI (`.github/workflows/test.yml`) runs both on every push to `master`,
-against `master` of cohesion-ts and cohesion-agent-kit.
+against the commits of cohesion-ts and cohesion-agent-kit that `bun.lock`
+pins.
 
 ## Licence
 

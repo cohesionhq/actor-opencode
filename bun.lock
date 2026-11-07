@@ -7,8 +7,8 @@
       "dependencies": {
         "@opencode/client": "2.2.5",
         "@opencode/sdk": "^2.2.5",
-        "cohesion-agent-kit": "file:../cohesion-agent-kit",
-        "cohesion-ts": "file:../cohesion-ts",
+        "cohesion-agent-kit": "github:cohesionhq/actor-kit",
+        "cohesion-ts": "github:cohesionhq/ts",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -447,9 +447,9 @@
 
     "cmd-shim": ["cmd-shim@8.0.0", "", {}, "sha512-Jk/BK6NCapZ58BKUxlSI+ouKRbjH1NLZCgJkYoab+vEHUY3f6OzpNBN9u7HFSv9J6TRDGs4PLOHezoKGaFRSCA=="],
 
-    "cohesion-agent-kit": ["cohesion-agent-kit@file:../cohesion-agent-kit", { "dependencies": { "cohesion-ts": "file:../cohesion-ts" }, "devDependencies": { "@types/bun": "latest", "typescript": "^7" } }],
+    "cohesion-agent-kit": ["cohesion-agent-kit@github:cohesionhq/actor-kit#30b3402", { "dependencies": { "cohesion-ts": "github:cohesionhq/ts" } }, "cohesionhq-actor-kit-30b3402", "sha512-epaM++xvvJcrVmTnDyZ1sPyxErlrErd2U2QcO91lg4PpZU74TBgATu+V9M9CWjgsS1CgXrbHOz2Ss+viaxuXXg=="],
 
-    "cohesion-ts": ["cohesion-ts@file:../cohesion-ts", { "devDependencies": { "@types/bun": "latest", "typescript": "^7" } }],
+    "cohesion-ts": ["cohesion-ts@github:cohesionhq/ts#ba027a0", {}, "cohesionhq-ts-ba027a0", "sha512-ckPz8fL7YmVe8F0qZRqpRUbsjajzYFkq4Rb2/ie2eZdN/gSPhRfHhaKPIFSHtqjyXvBXO7qChxh9VRM9zid1sw=="],
 
     "color-convert": ["color-convert@2.0.1", "", { "dependencies": { "color-name": "~1.1.4" } }, "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="],
 
@@ -848,8 +848,6 @@
     "@opencode/simulation/ws": ["ws@8.21.0", "", { "peerDependencies": { "bufferutil": "^4.0.1", "utf-8-validate": ">=5.0.2" }, "optionalPeers": ["bufferutil", "utf-8-validate"] }, "sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g=="],
 
     "@opentui/core/diff": ["diff@9.0.0", "", {}, "sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw=="],
-
-    "cohesion-agent-kit/cohesion-ts": ["cohesion-ts@file:../cohesion-ts", { "devDependencies": { "@types/bun": "latest", "typescript": "^7" } }],
 
     "cross-fetch/node-fetch": ["node-fetch@2.7.0", "", { "dependencies": { "whatwg-url": "^5.0.0" }, "peerDependencies": { "encoding": "^0.1.0" }, "optionalPeers": ["encoding"] }, "sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A=="],
 

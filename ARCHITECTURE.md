@@ -59,12 +59,13 @@ particular to OpenCode, behind the kit's `SessionEngine` and `SessionRunner`.
 
 ## Dependencies
 
-- `cohesion-ts` (`file:../cohesion-ts`) owns the protocol.
-- `cohesion-agent-kit` (`file:../cohesion-agent-kit`) owns what actor clients
+- `cohesion-ts` (`github:cohesionhq/ts`) owns the protocol.
+- `cohesion-agent-kit` (`github:cohesionhq/actor-kit`) owns what actor clients
   share, on top of cohesion-ts. What `actor-agentsdk` needs too belongs
   there, not here.
-- Both are copies under `node_modules` (the kit has its own of cohesion-ts),
-  so run `bun install` after changing either.
+- Both come from GitHub at the commits `bun.lock` pins, with one copy of
+  cohesion-ts for both. A change to either reaches this client once it's
+  pushed and `bun update cohesion-agent-kit cohesion-ts` has run.
 - `@opencode/sdk` embeds OpenCode; `@opencode/client` (same version) is
   imported for its generated types (`OpenCodeEvent`, `PermissionAsked`, …).
   Keep the two on one version.

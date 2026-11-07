@@ -17,8 +17,8 @@
 	"dependencies": {
 		"@opencode/client": "2.2.5",
 		"@opencode/sdk": "^2.2.5",
-		"cohesion-agent-kit": "file:../cohesion-agent-kit",
-		"cohesion-ts": "file:../cohesion-ts"
+		"cohesion-agent-kit": "github:cohesionhq/actor-kit",
+		"cohesion-ts": "github:cohesionhq/ts"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
