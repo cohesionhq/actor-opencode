@@ -23,17 +23,17 @@ jobs:
         working-directory: actor
     steps:
       # package.json takes cohesion-ts and cohesion-agent-kit from beside this
-      # checkout (file:../), so CI lays them out the same way, at their master.
+      # checkout (file:../), so CI lays them out the same way, at the master of cohesionhq/ts and cohesionhq/actor-kit.
       - uses: actions/checkout@v7
         with:
           path: actor
       - uses: actions/checkout@v7
         with:
-          repository: cohesionhq/cohesion-ts
+          repository: cohesionhq/ts
           path: cohesion-ts
       - uses: actions/checkout@v7
         with:
-          repository: cohesionhq/cohesion-agent-kit
+          repository: cohesionhq/actor-kit
           path: cohesion-agent-kit
       - uses: oven-sh/setup-bun@v2
         with:
