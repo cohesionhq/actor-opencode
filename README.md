@@ -115,6 +115,9 @@ bun run check
 bun test
 ```
 
+CI (`.github/workflows/test.yml`) runs both on every push to `master`,
+against `master` of cohesion-ts and cohesion-agent-kit.
+
 ## Licence
 
 Copyright (C) 2026 Jackson Zamorano.

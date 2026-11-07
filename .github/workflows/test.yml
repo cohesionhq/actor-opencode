@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Check and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: actor
+    steps:
+      # package.json takes cohesion-ts and cohesion-agent-kit from beside this
+      # checkout (file:../), so CI lays them out the same way, at their master.
+      - uses: actions/checkout@v7
+        with:
+          path: actor
+      - uses: actions/checkout@v7
+        with:
+          repository: cohesionhq/cohesion-ts
+          path: cohesion-ts
+      - uses: actions/checkout@v7
+        with:
+          repository: cohesionhq/cohesion-agent-kit
+          path: cohesion-agent-kit
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run check
+      - run: bun test
