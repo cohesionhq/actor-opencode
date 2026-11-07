@@ -1,0 +1,27 @@
+{
+	"name": "actor-opencode",
+	"version": "0.1.0",
+	"description": "Offers OpenCode to Cohesion as actors, through the embedded OpenCode SDK.",
+	"type": "module",
+	"private": true,
+	"license": "AGPL-3.0-only",
+	"author": "Jackson Zamorano",
+	"bin": {
+		"actor-opencode": "index.ts"
+	},
+	"scripts": {
+		"start": "bun index.ts run",
+		"check": "tsc --noEmit -p .",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"@opencode/client": "2.2.5",
+		"@opencode/sdk": "^2.2.5",
+		"cohesion-agent-kit": "file:../cohesion-agent-kit",
+		"cohesion-ts": "file:../cohesion-ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"typescript": "^7"
+	}
+}
