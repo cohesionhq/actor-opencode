@@ -4,7 +4,7 @@
 	"description": "Offers OpenCode to Cohesion as actors, through the embedded OpenCode SDK.",
 	"type": "module",
 	"private": true,
-	"license": "AGPL-3.0-only",
+	"license": "MIT",
 	"author": "Jackson Zamorano",
 	"bin": {
 		"actor-opencode": "index.ts"
