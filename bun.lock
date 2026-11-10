@@ -7,7 +7,7 @@
       "dependencies": {
         "@opencode/client": "2.2.5",
         "@opencode/sdk": "^2.2.5",
-        "cohesion-agent-kit": "github:cohesionhq/actor-kit",
+        "cohesion-agent-kit": "github:cohesionhq/actor-kit#2a8fc6941e466246e5a14dbf9c25157f48accf96",
         "cohesion-ts": "github:cohesionhq/ts",
       },
       "devDependencies": {
@@ -447,7 +447,7 @@
 
     "cmd-shim": ["cmd-shim@8.0.0", "", {}, "sha512-Jk/BK6NCapZ58BKUxlSI+ouKRbjH1NLZCgJkYoab+vEHUY3f6OzpNBN9u7HFSv9J6TRDGs4PLOHezoKGaFRSCA=="],
 
-    "cohesion-agent-kit": ["cohesion-agent-kit@github:cohesionhq/actor-kit#30b3402", { "dependencies": { "cohesion-ts": "github:cohesionhq/ts" } }, "cohesionhq-actor-kit-30b3402", "sha512-epaM++xvvJcrVmTnDyZ1sPyxErlrErd2U2QcO91lg4PpZU74TBgATu+V9M9CWjgsS1CgXrbHOz2Ss+viaxuXXg=="],
+    "cohesion-agent-kit": ["cohesion-agent-kit@github:cohesionhq/actor-kit#2a8fc69", { "dependencies": { "cohesion-ts": "github:cohesionhq/ts" } }, "cohesionhq-actor-kit-2a8fc69", "sha512-1p+heBMVSApKhFk2s39hOvklufwg0tLSFhrICp5hGA6C2A7hYxXUTEkOR2+C4/qJvfjYpCDbjP9Su5XXt95JAw=="],
 
     "cohesion-ts": ["cohesion-ts@github:cohesionhq/ts#ba027a0", {}, "cohesionhq-ts-ba027a0", "sha512-ckPz8fL7YmVe8F0qZRqpRUbsjajzYFkq4Rb2/ie2eZdN/gSPhRfHhaKPIFSHtqjyXvBXO7qChxh9VRM9zid1sw=="],
 

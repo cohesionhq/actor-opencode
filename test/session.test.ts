@@ -92,18 +92,6 @@ test("words said while a permission waits reject it with them; one with nothing 
 	expect(calls.some(([name]) => name === 'prompt')).toBe(false);
 });
 
-test("a subagent's permission reaches the user and is answered in its own session; its other events don't", async () => {
-	const { session: it, handle, messages, idOf, calls } = fakeSession();
-	await handle('session.text.ended', { sessionID: 'child', text: 'inside', ordinal: 0 }, true);
-	expect(messages()).toEqual([]);
-	await handle('permission.asked', asked({ sessionID: 'child', action: 'edit', metadata: { files: [{ file: '/src/a.ts', patch: '@@', status: 'added' }] } }), true);
-	expect(messages()).toEqual([
-		expect.objectContaining({ kind: 'permission', subject: { kind: 'fileChange', changes: [{ path: 'a.ts', change: 'add', diff: '@@' }] } }),
-	]);
-	await it.hear({ kind: 'permission', request_id: idOf('permission'), decision: 'deny', message: 'not that' });
-	expect(calls).toEqual([['permission.reply', { sessionID: 'child', requestID: 'per_1', decision: 'reject', message: 'not that' }]]);
-});
-
 test("a request answered in OpenCode itself waits no more", async () => {
 	const { handle, statuses } = fakeSession();
 	await handle('session.execution.started', {});

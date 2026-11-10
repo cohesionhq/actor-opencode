@@ -33,7 +33,7 @@ export const EVENT_TYPES = [
 	'form.cancelled',
 ] as const;
 
-/** Where an event goes: the actor session's own session, or a subagent's under it. */
+/** Where an event goes: the actor session's own session, or a subagent's under it, with whether it is a subagent's. */
 export type Listener = (event: OpenCodeEvent, child: boolean) => void;
 
 /** The OpenCode session an event is about, if any. */
@@ -55,12 +55,16 @@ export class Events {
 	private readonly listeners = new Map<string, Listener>();
 	/** Each child session's parent, as OpenCode said on creating it. */
 	private readonly parents = new Map<string, string>();
+	/** The sessions whose parent, if any, is known: said on creating them, or asked of OpenCode. */
+	private readonly known = new Set<string>();
+	/** The events of a session whose parent is being asked of OpenCode, in the order they came. */
+	private readonly looking = new Map<string, OpenCodeEvent[]>();
 	private stopped = false;
 	private abort: AbortController | null = null;
 
 	constructor(
-		private readonly opencode: Pick<OpenCodeHost, 'events'>,
-		/** An event for a session no actor session listens to yet, such as one OpenCode resumes after a restart. */
+		private readonly opencode: Pick<OpenCodeHost, 'events' | 'sessions'>,
+		/** An event for a session no actor session listens to yet, such as one OpenCode resumes after a restart; with the session at the top of its subagents. */
 		private readonly orphan: (sessionId: string, event: OpenCodeEvent) => void,
 		private readonly log: (message: string) => void,
 	) {}
@@ -94,17 +98,49 @@ export class Events {
 
 	/** Hands `event` to its actor session. The stream waits on each, so a listener mustn't. */
 	route(event: OpenCodeEvent): void {
-		// Only for knowing whose a subagent's session is: no actor session acts on it.
 		if (event.type === 'session.created') {
-			if (event.data.parentID) this.parents.set(event.data.sessionID, event.data.parentID);
-			return;
+			this.known.add(event.data.sessionID);
+			// A session of its own matters to no actor session; a subagent's launches it.
+			if (!event.data.parentID) return;
+			this.parents.set(event.data.sessionID, event.data.parentID);
 		}
 		const session = sessionOf(event);
 		if (!session) return;
 		const root = this.root(session);
 		const listener = this.listeners.get(root);
 		if (listener) return listener(event, root !== session);
-		if (root === session) this.orphan(session, event);
+		// A session whose parent was never said, after a restart, may be a subagent's: ask once.
+		if (!this.known.has(session)) return this.look(session, event);
+		this.orphan(root, event);
+	}
+
+	/** Holds `event` while OpenCode says whose `session` is, then routes what came meanwhile in order. */
+	private look(session: string, event: OpenCodeEvent): void {
+		const held = this.looking.get(session);
+		if (held) return void held.push(event);
+		this.looking.set(session, [event]);
+		void this.learn(session).then(() => {
+			const events = this.looking.get(session) ?? [];
+			this.looking.delete(session);
+			for (const next of events) this.route(next);
+		});
+	}
+
+	/** Learns the parents above `session` from OpenCode, up to the one with none. Never fails. */
+	private async learn(session: string): Promise<void> {
+		let at = session;
+		for (let depth = 0; depth < 32 && !this.known.has(at); depth++) {
+			let parent: string | undefined;
+			try {
+				parent = (await this.opencode.sessions.get({ sessionID: at })).parentID;
+			} catch (error) {
+				this.log(`couldn't tell whose session ${at} is: ${error instanceof Error ? error.message : error}`);
+			}
+			this.known.add(at);
+			if (!parent) return;
+			this.parents.set(at, parent);
+			at = parent;
+		}
 	}
 
 	/** The session at the top of `session`'s subagents, or itself. */

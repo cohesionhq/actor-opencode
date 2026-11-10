@@ -44,6 +44,8 @@ async function setUp() {
 				return { id: 'new' };
 			},
 			prompt: call('prompt'), switchAgent: call('switchAgent'),
+			// None of the sessions these tests route is a subagent's.
+			get: async () => ({}),
 		},
 		experimental: { session: { instructions: { entry: { put: call('instructions') } } } },
 	} as unknown as OpenCodeHost;
@@ -113,8 +115,10 @@ test("an event for a stored actor session's session picks it up, and it hears th
 	store.put(5, { actor: 'a', session_id: 'kept', agent: 'build', model: null, effort: null });
 	const route = (type: string, sessionID: string) => events.route({ type, data: { sessionID } } as never);
 	route('session.execution.started', 'unknown');
+	await Bun.sleep(0);
 	expect(host.running).toEqual([]);
 	route('session.execution.started', 'kept');
+	await Bun.sleep(0);
 	const runner = host.session(5);
 	expect(runner).toBeDefined();
 	route('session.execution.succeeded', 'kept');
@@ -127,6 +131,7 @@ test("an orphan whose actor isn't offered any more stays on disk, unopened", asy
 	const { host, store, events } = await setUp();
 	store.put(5, { actor: 'gone', session_id: 'kept', agent: 'build', model: null, effort: null });
 	events.route({ type: 'session.execution.started', data: { sessionID: 'kept' } } as never);
+	await Bun.sleep(0);
 	expect(host.running).toEqual([]);
 });
 

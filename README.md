@@ -63,8 +63,8 @@ agents or providers), read at startup and whenever the configuration changes:
   request: a `command` for `shell`, a `fileChange` with OpenCode's own
   unified diffs for `edit` (which `write` and `patch` ask as), or any other
   `tool`. A form, such as the `question` tool's, becomes a `question`, its
-  answers going back by field, an option by its value. Prompts from
-  subagents reach the user too, and are answered in the subagent's session.
+  answers going back by field, an option by its value. A subagent's prompts
+  are in its own transcript (below), and answered in its own session.
   The actor session needs attention until the user responds, or until the request is
   answered elsewhere (in OpenCode's own UI, or by a rule). Allow for session
   adds OpenCode's suggested rules (`save`) to the session's own permissions,
@@ -82,6 +82,26 @@ agents or providers), read at startup and whenever the configuration changes:
 - **Tool times**: each tool use is reported as OpenCode calls it and ended
   (`end`) once its result is in, failed or not. One reported only once
   its result is in (for its images) ends as it is shown.
+- **Subagents**: a child session (`session.created` with a `parentID`) is a
+  subagent, launched to Cohesion by OpenCode's id for the session, before
+  anything else about it: `title` the `subagent` call's description (else the
+  session's title), `agent_type` the call's `subagent_type` (else the session's
+  agent), `model` the session's, `background` the call's `background`,
+  `message_id` the Cohesion message of the `subagent` tool call that made it
+  (OpenCode doesn't say which call; the oldest unmatched one in that
+  transcript is taken), and `parent` the subagent whose session it was made in,
+  or none. Its whole stream (thinking, text, tool uses with their `end`s, steps'
+  context, its title, `execution.*`) goes in its own transcript, addressed with
+  `subagent`: `started` is working, `succeeded` and `interrupted` idle ("Done"),
+  `failed` failed; the session's own status and progress are untouched. Its
+  permissions and forms are requests in its transcript, marking it
+  `needsAttention`; the user's response arrives as `sendActorSessionMessage` with
+  `subagent` and is answered in the child session. A session OpenCode events
+  name that this process never saw made (after a restart) is asked of OpenCode
+  (`sessions.get`, up through its parents) and launched from that, with no
+  `message_id`. Stopping the session leaves working subagents idle; after a
+  reconnect every one still known is launched again.
+
 - **Tool categories**: `command` (`shell`), `read` (`read`), `edit`
   (`edit`, `write`, `patch`), `search` (`grep`, `glob`), `web` (`webfetch`,
   `websearch`), `agent` (`subagent`), `skill` (`skill`), and `other` for the

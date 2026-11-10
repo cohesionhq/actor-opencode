@@ -18,6 +18,8 @@ export function fakeSession(refuse: (report: ActorSessionReport) => boolean = ()
 		},
 	} as unknown as Client;
 	const store = { put() {}, get() {} } as unknown as SessionStore<SessionRecord>;
+	/** What OpenCode says of a session when asked, by id; others get an ordinary session. */
+	const infos: Record<string, unknown> = {};
 	const call = (name: string, result: unknown = undefined) => async (input: unknown) => {
 		calls.push([name, input]);
 		return result;
@@ -28,7 +30,10 @@ export function fakeSession(refuse: (report: ActorSessionReport) => boolean = ()
 			prompt: call('prompt'),
 			interrupt: call('interrupt'),
 			switchAgent: call('switchAgent'),
-			get: call('get', { permissions: [{ action: 'read', resource: '*', effect: 'allow' }] }),
+			get: async (input: { sessionID: string }) => {
+				calls.push(['get', input]);
+				return infos[input.sessionID] ?? { permissions: [{ action: 'read', resource: '*', effect: 'allow' }] };
+			},
 			update: call('update'),
 			form: { reply: call('form.reply'), cancel: call('form.cancel') },
 		},
@@ -44,6 +49,7 @@ export function fakeSession(refuse: (report: ActorSessionReport) => boolean = ()
 		(it as unknown as { handle(e: unknown, c: boolean): Promise<void> }).handle({ type, data: { sessionID: 's', ...data } }, child);
 	return {
 		session: it,
+		infos,
 		sent,
 		calls,
 		handle,
